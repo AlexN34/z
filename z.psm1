@@ -1,4 +1,4 @@
-﻿$safehome = if ([String]::IsNullOrWhiteSpace($Env:HOME)) { $env:USERPROFILE } else { $Env:HOME } 
+﻿$safehome = if ([String]::IsNullOrWhiteSpace($Env:HOME)) { $env:USERPROFILE } else { $Env:HOME }
 $cdHistory = Join-Path -Path $safehome -ChildPath '\.cdHistory'
 
 <#
@@ -62,7 +62,7 @@ z foo -o Time
 #>
 function z {
     param(
-    [Parameter(Position=0)]
+    [Parameter(Position=0, ValueFromPipeline)]
     [string]
     ${JumpPath},
 
@@ -127,7 +127,8 @@ function z {
             if ($ListFiles) {
 
                 $newList = $list | % { New-Object PSObject -Property  @{Rank = $_.Rank; Path = $_.Path.FullName; LastAccessed = [DateTime]$_.Time } }
-                Format-Table -InputObject $newList -AutoSize
+                # Format-Table -InputObject $newList -AutoSize
+                return $newList
 
             } else {
 
